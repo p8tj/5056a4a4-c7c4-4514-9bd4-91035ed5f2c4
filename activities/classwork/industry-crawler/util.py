@@ -4,10 +4,8 @@ import time
 
 from difflib import SequenceMatcher
 
-
 def pretty_print(logger):
     pass
-
 
 def timeit(logger):
     def decorator(func):
@@ -19,7 +17,6 @@ def timeit(logger):
             return output
         return wrapper
     return decorator
-
 
 class StringWrapper(object):
     DEFAULT_THRESHOLD = 0.5
@@ -46,3 +43,19 @@ class StringWrapper(object):
     @property
     def value(self):
         return self._sensitivity_matching(self._value)
+
+    @Decorators.sensitivity_matching_meta_decorator()
+    def contains(self,pattern,reverse=False):
+        return(pattern in self.value) if not reverse else (self.value in pattern)
+
+    @Decorators.sensitivity_matching_meta_decorator()
+    def similarity_ratio(self,pattern):
+        return SequenceMatcher(None,self.value, pattern).ratio()
+
+
+    def similar_enought(self,pattern,threshold = None):
+        min = threshold if threshold is not None else self.DEFAULT_THRESHOLD
+        return self.similarity_ratio(pattern) > min_ratio
+
+    def boolean_search(self,pattern,exact = false,threshold = None, reverse = False):
+        return self.contains(pattern,reverse = reverse) if exact else self.similar_enought(pattern,threshold=threshold)
