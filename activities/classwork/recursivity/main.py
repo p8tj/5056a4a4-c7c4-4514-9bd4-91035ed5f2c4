@@ -3,7 +3,7 @@ import logging
 
 from util import TriangleBuilder, caching, timeit
 
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 
 class Main(object):
@@ -39,5 +39,5 @@ class Main(object):
         else:
             logger.info(f"Option {option} undefined.")
 
-    if _name_ == "_main_":
+    if __name__ == "__main__":
         fire.Fire(Main)
