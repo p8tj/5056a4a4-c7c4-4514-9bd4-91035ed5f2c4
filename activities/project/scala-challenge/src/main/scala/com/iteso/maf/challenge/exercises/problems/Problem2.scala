@@ -1,9 +1,6 @@
 package com.iteso.maf.challenge.exercises.problems
-
 import akka.http.scaladsl.server.Route
-
 case object Problem2 extends Problem {
-
   /**
     * Super Digit
     * Description:
@@ -24,9 +21,7 @@ case object Problem2 extends Problem {
     * Get request: /problems/2?n=123&k=3
     * Response: {"n":123,"k":3,"value":9}
     */
-
   case class SuperDigit(n: Long, k: Long, value: Long)
-
   val solution: Route = path("2") {
     get {
       parameters('n.as[Long], 'k.as[Long]) {
@@ -34,11 +29,22 @@ case object Problem2 extends Problem {
           // <---- Your code starts here. --->
 
           val challengeResponse: SuperDigit = ???
+          def sumsuper(n: Long): Long = n.toString.length match {
+            case 1 => n
+            case _ =>
+              val m = n.toString.toList.map(c => c.toString.toInt)
+              val s = m.foldLeft(0)(_ + _)
+              sumsuper(s)
+          }
+          val m = n.toString.toList.map(c => c.toString.toInt)
+          val s = m.foldLeft(0)(_ + _)
+          val prod = s * k
+          val fg = sumsuper(prod)
+          val challengeResponse: SuperDigit = SuperDigit(n=n, k=k, value=fg)
           // <---- Your code ends  here. ---->
           complete(challengeResponse)
         }
       }
     }
   }
-
 }

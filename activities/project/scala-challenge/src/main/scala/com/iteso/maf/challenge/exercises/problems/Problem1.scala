@@ -1,17 +1,10 @@
 package com.iteso.maf.challenge.exercises.problems
-
 import akka.http.scaladsl.server.Route
-
 case object Problem1 extends Problem {
-
-
   implicit class StringOps(string: String) {
     def getStr(i: Int): String = scala.util.Try(string.charAt(i).toString).toOption.getOrElse("")
   }
-
   final case class MixedString(first: String, second: String, mixed: String)
-
-
   /**
     * Mixing Strings
     * Description:
@@ -35,14 +28,21 @@ case object Problem1 extends Problem {
     * Get request: /problems/1?firstWord=abcdef&secondWord=1234
     * Response: {"first":"abcdef","second":"1234","mixed":"a1b2c3d4ef"}
     */
-
   val solution: Route = path("1") {
     get {
       parameters('firstWord.as[String], 'secondWord.as[String]) {
         (first, second) => {
           val challengeSolution: MixedString = {
             // <---- Your code starts here. --->
+            1 + 5
             ???
+            val base =  first.zip(second).map(tuple => tuple._1.toString + tuple._2.toString).mkString
+            val mixed = (first.length, second.length) match {
+              case (a, b) if a > b =>  base + first.substring(b, a)
+              case (c, d) if d > c => base + second.substring(c, d)
+              case _ => base
+            }
+            MixedString(first = first, second = second, mixed = mixed)
             // <---- Your code ends  here. ---->
           }
           complete(challengeSolution)
@@ -50,5 +50,4 @@ case object Problem1 extends Problem {
       }
     }
   }
-
 }
